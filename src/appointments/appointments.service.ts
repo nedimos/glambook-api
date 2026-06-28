@@ -5,11 +5,11 @@ import { PrismaService } from '../prisma.service';
 import { DayOfWeek } from '@prisma/client';
 
 export class CreateAppointmentDto {
-  salonId: string;
-  serviceId: string;
-  staffId: string;
-  date: string;
-  startTime: string;
+  salonId!: string;
+  serviceId!: string;
+  staffId!: string;
+  date!: string;
+  startTime!: string;
   note?: string;
 }
 

@@ -9,11 +9,11 @@ export class CreateSalonDto {
   @ApiProperty({ example: 'Lumière Beauty' })
   @IsString()
   @MaxLength(100)
-  name: string;
+  name!: string;
 
   @ApiProperty({ example: 'hair' })
   @IsString()
-  type: string;
+  type!: string;
 
   @ApiPropertyOptional()
   @IsOptional()

@@ -8,22 +8,22 @@ export class RegisterDto {
   @ApiProperty({ example: 'Amra' })
   @IsString()
   @MaxLength(50)
-  firstName: string;
+  firstName!: string;
 
   @ApiProperty({ example: 'Hasanović' })
   @IsString()
   @MaxLength(50)
-  lastName: string;
+  lastName!: string;
 
   @ApiProperty({ example: 'amra@example.com' })
   @IsEmail()
-  email: string;
+  email!: string;
 
   @ApiProperty({ example: 'StrongPass123!' })
   @IsString()
   @MinLength(8)
   @MaxLength(100)
-  password: string;
+  password!: string;
 
   @ApiPropertyOptional({ example: '+38761000000' })
   @IsOptional()
@@ -34,17 +34,17 @@ export class RegisterDto {
 export class LoginDto {
   @ApiProperty({ example: 'amra@example.com' })
   @IsEmail()
-  email: string;
+  email!: string;
 
   @ApiProperty({ example: 'StrongPass123!' })
   @IsString()
-  password: string;
+  password!: string;
 }
 
 export class RefreshTokenDto {
   @ApiProperty()
   @IsString()
-  refreshToken: string;
+  refreshToken!: string;
 }
 
 export class AuthResponseDto {
