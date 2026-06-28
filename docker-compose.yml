@@ -1,0 +1,60 @@
+version: '3.9'
+
+services:
+
+  # ─── PostgreSQL ──────────────────────────────────────────────────────────────
+  postgres:
+    image: postgres:16-alpine
+    container_name: glambook_postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: glambook
+      POSTGRES_PASSWORD: glambook_pass
+      POSTGRES_DB: glambook_db
+    ports:
+      - '5432:5432'
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U glambook -d glambook_db']
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # ─── Redis (for future queues/caching) ───────────────────────────────────────
+  redis:
+    image: redis:7-alpine
+    container_name: glambook_redis
+    restart: unless-stopped
+    ports:
+      - '6379:6379'
+    volumes:
+      - redis_data:/data
+
+  # ─── NestJS API ───────────────────────────────────────────────────────────────
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: glambook_api
+    restart: unless-stopped
+    ports:
+      - '3000:3000'
+    environment:
+      NODE_ENV: development
+      DATABASE_URL: postgresql://glambook:glambook_pass@postgres:5432/glambook_db?schema=public
+      JWT_SECRET: dev-jwt-secret-change-in-production
+      JWT_EXPIRES_IN: 15m
+      JWT_REFRESH_SECRET: dev-refresh-secret-change-in-production
+      JWT_REFRESH_EXPIRES_IN: 7d
+      FRONTEND_URL: http://localhost:3001
+    depends_on:
+      postgres:
+        condition: service_healthy
+    volumes:
+      - .:/app
+      - /app/node_modules
+
+volumes:
+  postgres_data:
+  redis_data:
