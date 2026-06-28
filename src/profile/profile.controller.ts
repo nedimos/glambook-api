@@ -1,4 +1,4 @@
-import { Controller, Get, Put, UseGuards, Body, UploadedFile, Post, UseInterceptors, Req } from '@nestjs/common';
+import { Controller, Get, Put, UseGuards, Body, UploadedFile, Post, UseInterceptors, Req, BadRequestException } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { JwtAuthGuard } from '../common/guards/auth.guard';
@@ -39,9 +39,18 @@ export class ProfileController {
         cb(null, name);
       },
     }),
+    limits: { fileSize: 4 * 1024 * 1024 }, // 4 MB
+    fileFilter: (_req, file, cb) => {
+      const allowed = /jpeg|jpg|png|webp/;
+      const ext = path.extname(file.originalname).toLowerCase();
+      const mime = (file.mimetype || '').toLowerCase();
+      if (allowed.test(ext) || allowed.test(mime)) cb(null, true);
+      else cb(new Error('Only image files are allowed'));
+    },
   }))
   async uploadAvatar(@CurrentUser('id') userId: string, @UploadedFile() file: Express.Multer.File, @Req() req: any) {
-    if (!file) return { url: null };
+    if (!file) throw new BadRequestException('No file uploaded');
+    // multer enforces file size; handle error messages elsewhere if needed
     const url = `${req.protocol}://${req.get('host')}/uploads/${file.filename}`;
     return this.profile.updateAvatar(userId, url);
   }
