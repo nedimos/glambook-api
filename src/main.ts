@@ -7,6 +7,14 @@ async function bootstrap() {
   const logger = new Logger('GlamBook');
   const app = await NestFactory.create(AppModule);
 
+  // Attach a lightweight language detector — uses `x-lang` header or Accept-Language
+  app.use((req: any, _res: any, next: any) => {
+    const header = (req.headers['x-lang'] || req.headers['accept-language'] || 'en').toString();
+    const lang = header.split(',')[0].split('-')[0];
+    req.locale = lang || 'en';
+    next();
+  });
+
   // ─── Global prefix ──────────────────────────────────────────────────────────
   const prefix = process.env.API_PREFIX || 'api/v1';
   app.setGlobalPrefix(prefix);

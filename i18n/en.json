@@ -1,0 +1,11 @@
+{
+  "errors": {
+    "NOT_FOUND": "Resource not found",
+    "SERVICE_NOT_FOUND": "Service not found",
+    "APPOINTMENT_NOT_FOUND": "Appointment not found",
+    "ACCOUNT_INACTIVE": "Account not found or deactivated"
+  },
+  "auth": {
+    "INVALID_CREDENTIALS": "Invalid email or password"
+  }
+}

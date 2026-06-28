@@ -4,6 +4,7 @@ import { ThrottlerModule, ThrottlerGuard } from '@nestjs/throttler';
 import { APP_GUARD, APP_FILTER } from '@nestjs/core';
 
 import { PrismaService } from './prisma.service';
+import { I18nModule } from './i18n/i18n.module';
 import { AuthModule } from './auth/auth.module';
 import { AllExceptionsFilter } from './common/filters/exception.filter';
 
@@ -24,6 +25,7 @@ import { AppointmentsController } from './appointments/appointments.controller';
     }]),
 
     AuthModule,
+    I18nModule,
   ],
   controllers: [
     SalonsController,
