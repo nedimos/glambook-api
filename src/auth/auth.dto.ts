@@ -49,13 +49,13 @@ export class RefreshTokenDto {
 
 export class AuthResponseDto {
   @ApiProperty()
-  accessToken: string;
+  accessToken!: string;
 
   @ApiProperty()
-  refreshToken: string;
+  refreshToken!: string;
 
   @ApiProperty()
-  user: {
+  user!: {
     id: string;
     email: string;
     firstName: string;
@@ -64,3 +64,4 @@ export class AuthResponseDto {
     avatarUrl?: string;
   };
 }
+
