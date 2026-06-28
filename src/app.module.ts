@@ -12,6 +12,8 @@ import { SalonsService } from './salons/salons.service';
 import { SalonsController } from './salons/salons.controller';
 import { AppointmentsService } from './appointments/appointments.service';
 import { AppointmentsController } from './appointments/appointments.controller';
+import { ProfileService } from './profile/profile.service';
+import { ProfileController } from './profile/profile.controller';
 
 @Module({
   imports: [
@@ -30,11 +32,13 @@ import { AppointmentsController } from './appointments/appointments.controller';
   controllers: [
     SalonsController,
     AppointmentsController,
+    ProfileController,
   ],
   providers: [
     PrismaService,
     SalonsService,
     AppointmentsService,
+    ProfileService,
 
     // Global rate limit guard
     { provide: APP_GUARD, useClass: ThrottlerGuard },

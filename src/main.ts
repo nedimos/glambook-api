@@ -1,11 +1,13 @@
 import { NestFactory } from '@nestjs/core';
+import { NestExpressApplication } from '@nestjs/platform-express';
 import { ValidationPipe, Logger } from '@nestjs/common';
+import * as path from 'path';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { AppModule } from './app.module';
 
 async function bootstrap() {
   const logger = new Logger('GlamBook');
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create<NestExpressApplication>(AppModule);
 
   // Attach a lightweight language detector — uses `x-lang` header or Accept-Language
   app.use((req: any, _res: any, next: any) => {
@@ -53,6 +55,8 @@ async function bootstrap() {
   });
 
   // ─── Start ──────────────────────────────────────────────────────────────────
+  // Serve uploaded files
+  app.useStaticAssets(path.join(process.cwd(), 'uploads'), { prefix: '/uploads' });
   const port = process.env.PORT || 3000;
   await app.listen(port);
 
